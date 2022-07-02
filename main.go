@@ -1,34 +1,27 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
-var snack = [5]string{"Tahu cripsy", "Roast Potato", "Potato Wedges", "Fluffy Pancake", "French Toast"}
-var mainCourse = [5]string{"Spaghetti Aglio E Olio", "Spaghetti Carbonara", "Butter Rice", "Nasi Goreng Seafood", "Mie Merah"}
-var coffee = [8]string{"Cold Brew", "Americano", "Espresso", "Hazelnut", "Latte", "Tubruk", "Cappucino", "Kopi Gula Aren"}
-var nonCoffee = [6]string{"Matcha", "Chocolate", "Lemon Tea", "Thai Tea", "Mint Tea", "Cheese Cookies"}
-
-func main() {
-	showMenu()
+var Foods = map[string][]string{
+	"snack":       {"tahu crispy", "roast potato", "potato wedges", "fluffy pancakes", "french toast"},
+	"main course": {"spaghetti aglio e olio", "spaghetti carbonara", "nasi goreng seafood", "mie goreng", "dori sambal matah"},
+	"coffee":      {"cold brew", "americano", "caramel macchiato", "espresso", "cappucino", "latte"},
+	"non coffee":  {"vanilla cookies", "matcha", "chocolate", "lemon tea", "thai tea", "air mineral"},
 }
 
 func showMenu() {
-	fmt.Println("\n====== SNACK ======")
-	for _, element := range snack {
-		fmt.Println("-", element)
+	for key, value := range Foods {
+		fmt.Println("======", strings.Title(key), "======")
+		for _, food := range value {
+			fmt.Println(strings.Title(food))
+		}
+		fmt.Println()
 	}
+}
 
-	fmt.Println("\n====== MAIN COURSE ======")
-	for _, element := range mainCourse {
-		fmt.Println("-", element)
-	}
-
-	fmt.Println("\n====== COFFEE ======")
-	for _, element := range coffee {
-		fmt.Println("-", element)
-	}
-
-	fmt.Println("\n====== NON COFFEE ======")
-	for _, element := range nonCoffee {
-		fmt.Println("-", element)
-	}
+func main() {
+	showMenu()
 }
