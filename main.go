@@ -11,7 +11,9 @@ type Food struct {
 	Cost, Stock int
 }
 
-var Foods = map[string][]Food{
+type FoodMap map[string][]Food
+
+var Foods = FoodMap{
 	"snack": {
 		{
 			Name:  "tahu crispy",
@@ -132,7 +134,13 @@ var Foods = map[string][]Food{
 	},
 }
 
+func (food FoodMap) Add(category string, data Food) {
+	Foods[category] = append(Foods[category], data)
+}
+
 func showMenu() {
+	clearConsole()
+
 	LINE_LENGTH := 50
 	maxWord := getMaxWord(Foods)
 	for key, value := range Foods {
@@ -145,10 +153,60 @@ func showMenu() {
 				cost = " " + cost
 			}
 
-			fmt.Println(food.Name + createLine(" ", maxWord-len(food.Name)) + "\t" + cost + " K\t Stock : " + stock)
+			fmt.Println(strings.Title(food.Name) + createLine(" ", maxWord-len(food.Name)) + "\t" + cost + " K\t Stock : " + stock)
 		}
 		fmt.Println()
 	}
+
+	showOption()
+}
+
+func showOption() {
+	fmt.Println()
+	fmt.Println("1. Menambahkan menu baru")
+	fmt.Println("2. Hapus menu")
+	fmt.Println("3. Masukan pesanan")
+
+	var ans string
+	fmt.Printf("\nMasukan pilihan anda : ")
+	fmt.Scanf("%s", &ans)
+
+	clearConsole()
+	handleUserInput(ans)
+}
+
+func handleUserInput(input string) {
+	switch input {
+	case "1":
+		addMenu()
+	// case "2":
+	// 	removeMenu()
+	// case "3":
+	// 	addOrder()
+	default:
+		var ans string
+		fmt.Printf("Invalid Input\n\nPress Enter to Continue...")
+		fmt.Scanln(&ans)
+		showMenu()
+	}
+}
+
+func addMenu() {
+	var category string
+	var foodData Food
+
+	fmt.Printf("Masukkan menu kategori : ")
+	fmt.Scanf("%s", &category)
+	fmt.Printf("Masukkan nama menu : ")
+	fmt.Scanf("%s", &foodData.Name)
+	fmt.Printf("Masukkan harga menu : ")
+	fmt.Scanf("%d", &foodData.Cost)
+	fmt.Printf("Masukkan stock yang tersedia : ")
+	fmt.Scanf("%d", &foodData.Stock)
+
+	Foods.Add(category, foodData)
+	showMenu()
+
 }
 
 func main() {
@@ -174,4 +232,8 @@ func getMaxWord(foodMap map[string][]Food) int {
 		}
 	}
 	return result
+}
+
+func clearConsole() {
+	fmt.Printf("\x1bc")
 }
